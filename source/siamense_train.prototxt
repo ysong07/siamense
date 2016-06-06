@@ -1,0 +1,39 @@
+name:"siamese_train_test"
+
+layer {
+  name: "pair_data"
+  type: "HDF5Data"
+  top: "pair_data"
+  top: "sim"
+  include {
+    phase: TRAIN
+  }
+  transform_param {
+    mirror: true
+    crop_size: 227
+    mean_file: "/work/ys1297/face_recognition/data/lfw_deepfunneled_dataset/lfwdeepfunnel_train_rand.binaryproto"
+  }
+  data_param {
+    source: "examples/siamese/mnist_siamese_train_leveldb"
+    batch_size: 50
+  }
+}
+
+layer {
+  name: "pair_data"
+  type: "Data"
+  top: "pair_data"
+  top: "sim"
+  include {
+    phase: TEST
+  }
+  transform_param {
+    scale: 0.00390625
+  }
+  data_param {
+    source: "examples/siamese/mnist_siamese_test_leveldb"
+    batch_size: 100
+  }
+}
+
+
